@@ -14,6 +14,8 @@ const todoSchema = new mongoose.Schema({
   }
 });
 
+// static, instance and query methods has to be created separately
+
 
 
 // exporting todoSchema 

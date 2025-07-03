@@ -1,13 +1,15 @@
 //depandancies
 const express = require('express');
-const router = require('./Router/todoHandle');
+const todoHandler = require('./Router/todoHandle');
+const userHandler = require('./Router/userHandler');
 const mongoose = require('mongoose');
 
 
 // listing section 
 const app = express();
 app.use(express.json())
-app.use('/todo', router)
+app.use('/todo', todoHandler)
+app.use('/user', userHandler)
 
 
 //mongoose connection
@@ -27,6 +29,9 @@ app.get('/', (req, res) => {
 
 //default error handler 
 app.use((err, req, res, next) => {
+    if(res.headersSent){
+        return next(err)
+    }
     res.status(500).send('Something went wrong from err handler!')
 })
 

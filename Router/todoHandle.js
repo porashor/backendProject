@@ -5,8 +5,13 @@ const router = express.Router();
 const todoSchema = require('../schema/todoSchema');
 const Todo = new mongoose.model('Todo', todoSchema);
 //get request handling
-router.get('/', (req, res) => {
-    res.send('Hello World!')
+router.get('/:id', async (req, res) => {
+    try{
+        const data = await Todo.find({_id: req.params.id})
+        res.status(200).send(data)
+    }catch(err){
+        res.status(400).send(err)
+    }
 })
 
 //post request handling
@@ -24,13 +29,25 @@ router.post("/", async (req, res) => {
 })
 
 //put request handling
-router.put("/", (req, res) => {
-    res.send('Hello World!')
+router.put("/:id", async (req, res) => {
+    try {
+        const result = await Todo.updateOne(
+            {_id: req.params.id},
+            {$set: req.body}
+        )
+        res.status(200).send(result)
+    } catch (error) {
+        res.status(400).send(error)
+    }
 })
 
 //delete request handling
-router.delete("/", (req, res) => {
-    res.send('Hello World!')
+router.delete("/:id", async (req, res) => {
+    try {
+        const result = await Todo.deleteOne({_id: req.params.id})
+    } catch (error) {
+        res.status(400).send(error)  
+    }
 })
 
 module.exports = router
